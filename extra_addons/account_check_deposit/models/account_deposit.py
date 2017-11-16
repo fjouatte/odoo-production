@@ -253,5 +253,11 @@ class AccountCheckDeposit(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
+    @api.model
+    @api.onchange('partner_id')
+    def set_default_check_holder(self):
+        self.check_holder = self.partner_id.name
+
     check_deposit_id = fields.Many2one(
         'account.check.deposit', string='Check Deposit', copy=False)
+    check_holder = fields.Char(string='Check Holder', copy=False)
